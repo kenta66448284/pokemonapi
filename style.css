@@ -9,8 +9,9 @@ ul{
     
 }
 li{
+    border: #000 1px solid;
     list-style: none;
-    margin: 0 20px;
+    margin: 10px 20px;
     padding: 10px 20px;
 }
 .number{

@@ -25,8 +25,9 @@ let list = document.querySelector(".pokemonlist");
 let ul = document.createElement("ul");
 
 console.log(list)
-for (let i = 0;i<899;i++){
+for (let i = 1;i<899;i++){
     const listurl = `https://pokeapi.co/api/v2/pokemon/${i}`;
+    
     let li = document.createElement("li");
     li.classList.add("pokelist")
     let link = document.createElement("a");
@@ -38,8 +39,18 @@ for (let i = 0;i<899;i++){
     })
     .then(function(list){
         let listname = list.name;
+        let nameurl = list.species.url;
         listimg.setAttribute("src",list.sprites.front_default)
-        p.innerHTML=listname;
+        fetch(nameurl)
+        .then(function(pname){
+            return pname.json();
+        })
+        .then(function(namedate){
+            // console.log(namedate.names[0])
+            let japanname = namedate.names[0].name;
+            p.innerHTML = japanname
+            
+        })
         li.appendChild(p);
         li.appendChild(listimg)
         ul.appendChild(li)
@@ -52,6 +63,7 @@ list.appendChild(ul)
 submit.addEventListener("click",function(){
     let pokenumber = number.value;
     let namenumber = pokenumber -1;
+    
     console.log(namenumber)
     console.log(pokenumber);
     // let janame = pokemonname[namenumber]["ja"]
@@ -60,14 +72,20 @@ submit.addEventListener("click",function(){
     fetch(url)
     .then(function(response){
         return response.json();
-
     })
     .then(function(deta){
-        console.log(deta)
-        console.log(deta.name);
+        let nameurls = deta.species.url;
+        console.log(nameurls)
+        fetch(nameurls)
+        .then(function(responsename){
+            return responsename.json();
+        })
+        .then(function(nadeta){
+            let japanname = nadeta.names[0].name;
+            name.innerHTML = japanname
+        })
         let name = document.querySelector(".pokemon_name");
         let img = document.querySelector(".pokemon_img");
-        name.innerHTML=janame;
         img.setAttribute("src",deta.sprites.front_default);
         let ul = document.querySelector(".pokemon_type");
         ul.innerHTML = "";
