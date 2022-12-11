@@ -62,12 +62,7 @@ list.appendChild(ul)
 
 submit.addEventListener("click",function(){
     let pokenumber = number.value;
-    let namenumber = pokenumber -1;
-    
-    console.log(namenumber)
-    console.log(pokenumber);
-    // let janame = pokemonname[namenumber]["ja"]
-    let janame = pokemonname[namenumber]["ja"]
+
     const url = `https://pokeapi.co/api/v2/pokemon/${pokenumber}`;
     fetch(url)
     .then(function(response){
@@ -76,20 +71,25 @@ submit.addEventListener("click",function(){
     .then(function(deta){
         let nameurls = deta.species.url;
         console.log(nameurls)
-        fetch(nameurls)
+        fetch(nameurls)//ポケモンの名前の日本語データを取得する
         .then(function(responsename){
             return responsename.json();
         })
         .then(function(nadeta){
-            let japanname = nadeta.names[0].name;
+            console.log(nadeta)
+            let japanname = nadeta.names[0].name;//現在は[0]を設定しているので日本語になっているが他の数値にすると他の国の名前になる
+            let japangenera = nadeta.genera[0].genus//分類を表示する
             name.innerHTML = japanname
+            general.innerHTML = japangenera
         })
         let name = document.querySelector(".pokemon_name");
+        let general= document.querySelector(".pokemon_genera")
         let img = document.querySelector(".pokemon_img");
         img.setAttribute("src",deta.sprites.front_default);
         let ul = document.querySelector(".pokemon_type");
         ul.innerHTML = "";
-        for(let i = 0;i<deta.types.length;i++){
+        //タイプの表示させる処理
+        for(let i = 0;i<deta.types.length;i++){//deta.types.lengthはポケモンのタイプ数判別のため
             let li = document.createElement("li");
             let colorname= deta.types[i].type.name;
             console.log(colorname);
